@@ -5,11 +5,11 @@
 	<h1 align="center">Financial News</h1>
     <div class="container" id="articles-container">
         {% for value in data %}
-        <div class="card mb-3 box" style="max-width: 640px; margin:auto;">
+        <div class="card text-white bg-dark mb-3" style="max-width: 640px; margin:auto;">
             <div class="row">
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title"><a href="{{value.url}}" target="_blanck">{{value.title}}</a></h5>
+                        <h5 class="card-title"><a href="{{value.url}}" class="text-warning bg-dark" target="_blanck">{{value.title}}</a></h5>
                         <p class="card-text">{{value.description}}</p>
                         <p class="card-text"><small class="text-muted">{{value.publishedat}}</small></p>
                     </div>

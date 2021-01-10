@@ -17,11 +17,11 @@
 	{% else %}
 		
 		<div class="card text-white bg-dark mb-3" style="max-width: 30rem;">
-	  		<strong><div class="card-header text-primary bg-dark mb-3"><h2>QUOTE: {{ api.symbol }}</strong></h2></div>
+	  		<strong><div class="card-header "><h2 class="text-warning bg-dark">QUOTE: {{ api.symbol }}</strong></h2></div>
 	  		<div class="card-body text-light">
-	    		<h3 class="card-title">{{ api.companyName }} <em>({{ api.symbol}})</em><br/> 
+	    		<h3 class="card-title, text-warning bg-dark">{{ api.companyName }} <em>({{ api.symbol}})</em><br/> 
 	    		<p class="card-text">
-	    		<h5><strong>Price: ${{ api.latestPrice }}<br/><br/></h5></strong>
+	    		<h5 class="text-warning bg-dark"><strong>Price: ${{ api.latestPrice }}<br/><br/></h5></strong>
 				Previous Close: ${{ api.previousClose }}<br/>
 		
 				Market Cap: {{ api.marketCap }}<br/>

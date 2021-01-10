@@ -100,7 +100,7 @@ def about(request):
 		fig = px.line(df,x="date", y="exchange_rate", title='2020-2021 historical data (Based on EUR)')
 		divv = pio.to_html(fig, include_plotlyjs=False, full_html=False)
 	
-		return render(request, 'blog/about.html', {'data': divv, 'ticker': "Enter a Ticker Symbol Above..."})
+		return render(request, 'blog/about.html', {'data': divv, 'currencytype': currencytype})
 	else:
 		api_request = requests.get(
 		'https://api.exchangeratesapi.io/history?start_at=2020-01-01&end_at=2020-12-30&base=EUR&symbols=TRY')
@@ -124,7 +124,7 @@ def about(request):
 	              title='2020-2021 historical data (Based on EUR)')
 		div = pio.to_html(fig, include_plotlyjs=False, full_html=False)
 
-		return render(request, 'blog/about.html', {'data': div})
+		return render(request, 'blog/about.html', {'data': div, 'currencytype': "TRY"})
 
 
 
