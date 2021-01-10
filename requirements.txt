@@ -1,0 +1,6 @@
+django- bootstrap4
+bootstrap4
+plotly
+pandas
+django-crispy-forms
+
