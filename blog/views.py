@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Post, Stock
-from .forms import StockForm
+from .models import Post, Stock, Currency
+from .forms import StockForm, CurrencyForm
 from django.contrib import messages
 import requests
 import json
@@ -74,28 +74,60 @@ def delete(request, stock_id):
 
 
 def about(request):
+	
+	
 
-    api_request = requests.get('https://api.exchangeratesapi.io/history?start_at=2020-01-01&end_at=2020-12-30&base=EUR&symbols=TRY')
-    hist_rates = json.loads(api_request.text)
-    rates_by_date = hist_rates['rates']
-    hist_data = []
+	if request.method == 'POST':
+		currencytype = request.POST['currencytype']
+		# pass in url that calls the api
+		api_request = requests.get("https://api.exchangeratesapi.io/history?start_at=2020-01-01&end_at=2020-12-30&base=EUR&symbols=" + currencytype)
+		hist_rates = json.loads(api_request.text)
+		rates_by_date = hist_rates['rates']
+		hist_data = []
 
-    for key, value in rates_by_date.items():
-        hist_dict = {'date': key, 'exchange_rate': value['TRY']}
-        hist_data.append(hist_dict)
-        hist_data.sort(key=lambda x: x['date'])
+		for key, value in rates_by_date.items():
+			hist_dict = {'date': key, 'exchange_rate': value[currencytype]}
+			hist_data.append(hist_dict)
+			hist_data.sort(key=lambda x: x['date'])
 
-    # Create pandas dataframe
-    df = pd.DataFrame(hist_data)
-    # Put dates on the x-axis
-    x = df['date']
-    # Put exchange rates on the y-axis
-    y = df['exchange_rate']
-    # Specify the width and height of a figure in unit inches
-    fig = px.line(df,x="date", y="exchange_rate", title='2020-2021 historical data (Based on EUR)')
-    div = pio.to_html(fig, include_plotlyjs=False, full_html=False)
+		# Create pandas dataframe
+		df = pd.DataFrame(hist_data)
+		# Put dates on the x-axis
+		x = df['date']
+		# Put exchange rates on the y-axis
+		y = df['exchange_rate']
+		# Specify the width and height of a figure in unit inches
+		fig = px.line(df,x="date", y="exchange_rate", title='2020-2021 historical data (Based on EUR)')
+		divv = pio.to_html(fig, include_plotlyjs=False, full_html=False)
+	
+		return render(request, 'blog/about.html', {'data': divv, 'ticker': "Enter a Ticker Symbol Above..."})
+	else:
+		api_request = requests.get(
+		'https://api.exchangeratesapi.io/history?start_at=2020-01-01&end_at=2020-12-30&base=EUR&symbols=TRY')
+		hist_rates = json.loads(api_request.text)
+		rates_by_date = hist_rates['rates']
+		hist_data = []
 
-    return render(request, 'blog/about.html', {'data': div})
+		for key, value in rates_by_date.items():
+			hist_dict = {'date': key, 'exchange_rate': value['TRY']}
+			hist_data.append(hist_dict)
+			hist_data.sort(key=lambda x: x['date'])
+
+		# Create pandas dataframe
+		df = pd.DataFrame(hist_data)
+		# Put dates on the x-axis
+		x = df['date']
+		# Put exchange rates on the y-axis
+		y = df['exchange_rate']
+		# Specify the width and height of a figure in unit inches
+		fig = px.line(df, x="date", y="exchange_rate",
+	              title='2020-2021 historical data (Based on EUR)')
+		div = pio.to_html(fig, include_plotlyjs=False, full_html=False)
+
+		return render(request, 'blog/about.html', {'data': div})
+
+
+
 
 
 def news(request):

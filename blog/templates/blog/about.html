@@ -2,9 +2,12 @@
 {% load bootstrap4 %}
 {% block content %}
 
+<form action="{% url 'blog-about' %}" class="form-inline my-2 my-lg-0" method="POST">
+        {% csrf_token %}    
+      <input class="form-control mr-sm-2" type="search" placeholder="Search by currencytype " aria-label="Search" name="currencytype">
+      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">GET</button>
+    </form>
 
         {{ data | safe }}
-    
-
 
 {% endblock %}

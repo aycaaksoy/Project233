@@ -20,4 +20,11 @@ def __str__(self):
 	return self.title
 
 
+class Currency(models.Model):
+	currencytype = models.CharField(max_length=3)
+
+	def __str__(self):
+		return self.currencytype
+
+
 
