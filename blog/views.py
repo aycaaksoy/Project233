@@ -6,6 +6,9 @@ from django.contrib import messages
 import requests
 import json
 from re import search
+import plotly.express as px
+import plotly.io as pio
+import pandas as pd
 # Create your views here.
 
 
@@ -71,23 +74,28 @@ def delete(request, stock_id):
 
 
 def about(request):
-	if request.method == 'POST':
-		ticker = request.POST['ticker']
-		# pass in url that calls the api
-		api_request = requests.get("https://cloud.iexapis.com/stable/stock/" +
-                             ticker + "/quote?token=pk_7b2bd309b9284f9488c22c6b82727561&symbols=" + ticker)
 
-		try:
-			api = json.loads(api_request.content)
-		except Exception as e:
-			api = "Error..."
+    api_request = requests.get('https://api.exchangeratesapi.io/history?start_at=2020-01-01&end_at=2020-12-30&base=EUR&symbols=TRY')
+    hist_rates = json.loads(api_request.text)
+    rates_by_date = hist_rates['rates']
+    hist_data = []
 
-		return render(request, 'blog/about.html', {'api': api,
-                                            'error': "Could not access the api"})
+    for key, value in rates_by_date.items():
+        hist_dict = {'date': key, 'exchange_rate': value['TRY']}
+        hist_data.append(hist_dict)
+        hist_data.sort(key=lambda x: x['date'])
 
-	else:
+    # Create pandas dataframe
+    df = pd.DataFrame(hist_data)
+    # Put dates on the x-axis
+    x = df['date']
+    # Put exchange rates on the y-axis
+    y = df['exchange_rate']
+    # Specify the width and height of a figure in unit inches
+    fig = px.line(df,x="date", y="exchange_rate", title='2020-2021 historical data (Based on EUR)')
+    div = pio.to_html(fig, include_plotlyjs=False, full_html=False)
 
-		return render(request, 'blog/about.html', {'ticker': "Enter a Ticker Symbol Above..."})
+    return render(request, 'blog/about.html', {'data': div})
 
 
 def news(request):
