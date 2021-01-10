@@ -13,13 +13,7 @@ import pandas as pd
 
 
 def home(request):
-#	context= {
-#   'posts': Post.objects.all()
-#	}
-#	return render(request, 'blog/home.html', context)
-
- 
-
+	
 	if request.method == 'POST':
 		ticker = request.POST['ticker']
 		# pass in url that calls the api
@@ -36,7 +30,10 @@ def home(request):
 
 	else:
 	
-		return render(request, 'blog/home.html', {'ticker': "Enter a Ticker Symbol Above..."})
+	    context = {
+            'posts': Post.objects.all()
+        }
+	    return render(request, 'blog/home.html', context)
 
 
 def add_stock(request):
