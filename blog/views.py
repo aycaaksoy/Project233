@@ -11,11 +11,11 @@ from re import search
 
 def home(request):
 #	context= {
-#	'posts': Post.objects.all()
+#   'posts': Post.objects.all()
 #	}
 #	return render(request, 'blog/home.html', context)
 
- # We use get_data method from utils
+ 
 
 	if request.method == 'POST':
 		ticker = request.POST['ticker']
@@ -88,18 +88,6 @@ def about(request):
 	else:
 
 		return render(request, 'blog/about.html', {'ticker': "Enter a Ticker Symbol Above..."})
-
-
-
-def market(request):
-	api_request = requests.get(
-		" https://cloud.iexapis.com/stable/stock/aapl/quote?token=pk_7b2bd309b9284f9488c22c6b82727561&symbols=aapl ")
-	try:
-		api = json.loads(api_request.content)
-	except Exception as e:
-		api = "Error, data not loading"
-
-	return render(request, 'blog/market.html', {'api': api})
 
 
 def news(request):
