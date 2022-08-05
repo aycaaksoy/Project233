@@ -11,7 +11,7 @@ Finance Invaders is an all about finance website that users can register and use
 - Display a graphic representation of the currency changes in a time period
 
 What I Learned
-  Rest APIs
-  Django
-  Python
+- Rest APIs
+- Django
+- Python
   
